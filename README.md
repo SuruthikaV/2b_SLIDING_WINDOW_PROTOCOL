@@ -13,36 +13,53 @@ To implement the Sliding Window Protocol in C/Python for reliable and efficient 
 ## server.py
  ```
 import socket
-s=socket.socket()
-s.bind(('127.0.0.1',12345))
-s.listen(5)
-c,addr=s.accept()
-size=int(input("Enter number of frames to send : "))
-l=list(range(size))
-s=int(input("Enter Window Size : "))
-st=0
-i=0
-while True:
- while(i<len(l)):
-  st+=s
-  c.send(str(l[i:st]).encode())
-  ack=c.recv(1024).decode()
-  if ack:
-   print(ack)
-   i+=s
+
+# Step 1: Create socket and bind
+server = socket.socket()
+server.bind(('127.0.0.1', 12345))
+server.listen(1)
+print("Server is listening...")
+
+# Step 2: Accept connection
+conn, addr = server.accept()
+print("Connected with", addr)
+
+# Step 3: Ask how many frames to send
+num_frames = int(input("Enter number of frames to send: "))
+frames = list(range(num_frames))   # frames are just numbers [0,1,2,...]
+
+# Step 4: Send frames one by one
+for frame in frames:
+    print(f"Sending frame: {frame}")
+    conn.send(str(frame).encode())   # send frame
+    ack = conn.recv(1024).decode()   # wait for ACK
+    print(f"Received: {ack}")
+
+print("All frames sent.")
+conn.close()
 ```
 ## client
 ```
 import socket
-s=socket.socket()
-s.connect(('127.0.0.1',12345))
-while True: 
- print(s.recv(1024).decode())
- s.send("acknowledgement received from the server".encode())
+
+# Step 1: Connect to server
+client = socket.socket()
+client.connect(('127.0.0.1', 12345))
+
+# Step 2: Receive frames one by one
+while True:
+    data = client.recv(1024).decode()
+    if not data:   # connection closed
+        break
+    print(f"Frame received: {data}")
+    client.send("ACK".encode())   # send acknowledgement
+
+client.close()
 ```
 
 ## OUTPUT
 ![Output 1](sling.jpeg)
+
 
 ## RESULT
 Thus, python program to perform stop and wait protocol was successfully executed
