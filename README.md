@@ -42,7 +42,7 @@ while True:
 ```
 
 ## OUTPUT
-<img width="1037" height="258" alt="Screenshot (65)" src="https://github.com/user-attachments/assets/5b13a4f9-a1e8-497a-b35c-94bf67da0908" />
+![Output 1](sling.jpeg)
 
 ## RESULT
 Thus, python program to perform stop and wait protocol was successfully executed
